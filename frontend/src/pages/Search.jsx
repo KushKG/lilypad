@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import SearchBar from "../components/SearchBar";
 
 
-export default function MyGarden({ data, dropdown_content }) {
+export default function Search({ data, dropdown_content }) {
     return (
         <SearchBar />
     );
