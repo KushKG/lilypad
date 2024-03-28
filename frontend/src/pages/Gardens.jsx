@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import { get_gardens } from '../controllers/firebase_controller';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 export default function Gardens({ navigation }) {
@@ -14,6 +14,16 @@ export default function Gardens({ navigation }) {
     };
     fetchGardens();
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchGardens = async () => {
+        const temp_gardens = await get_gardens();
+        setGardens(temp_gardens);
+      };
+      fetchGardens();
+    }, [])
+  );
 
   const navigateToNewPage = () => {
     navigation.navigate('Create Garden');

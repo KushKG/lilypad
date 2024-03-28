@@ -13,7 +13,7 @@ export default function PlantListView({ data }) {
         <TouchableOpacity
             onPress={toggleExpand}
             style={[styles.container, isExpanded && styles.expandedContainer]}
-            activeOpacity={1} // Set activeOpacity to 1
+            activeOpacity={1} 
         >
             <View style={styles.row}>
                 <Text style={styles.title}>{data.name}</Text>

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
+import { create_garden } from '../controllers/firebase_controller';
 
-export default function CreateGarden() {
+export default function CreateGarden({ navigation }) {
   const [gardenName, setGardenName] = useState('');
 
-  const handleCreateGarden = () => {
-    // Handle garden creation with gardenName
-    console.log('Creating garden with name:', gardenName);
+  const handleCreateGarden = async () => {
+    await create_garden(gardenName, [], null)
+    navigation.goBack()
   };
 
   return (

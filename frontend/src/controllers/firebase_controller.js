@@ -1,5 +1,5 @@
 import { db } from "./firebase_config";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, doc, setDoc } from "firebase/firestore";
 
 export const get_gardens = async () => {
     const snap = await getDocs(collection(db, 'gardens'))
@@ -13,14 +13,14 @@ export const get_gardens = async () => {
 }
 
 export const create_garden = async (name, plants, remind_time) => {
-    const collection_ref = db.collection('gardens');
-    const document_ref = collection_ref.doc();
-    data = {
+    const collection_ref = collection(db, 'gardens');
+    const document_ref = doc(collection_ref); // use doc() function to reference a document
+    const data = {
         name: name,
         plants: plants,
         remind_time: remind_time,
         timestamp: new Date().getTime()
-      };
+    };
     
-    await document_ref.set(data)
+    await setDoc(document_ref, data);
 }
