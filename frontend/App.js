@@ -18,8 +18,8 @@ export default function App() {
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    { key: 'first', title: 'First' },
-    { key: 'second', title: 'Second' },
+    { key: 'first', title: 'Home' },
+    { key: 'second', title: 'Search' },
   ]);
 
   const renderScene = SceneMap({

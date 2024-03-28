@@ -1,5 +1,5 @@
 import { db } from "./firebase_config";
-import { collection, getDocs, doc, setDoc } from "firebase/firestore";
+import { collection, getDocs, doc, setDoc, deleteDoc } from "firebase/firestore";
 
 export const get_gardens = async () => {
     const snap = await getDocs(collection(db, 'gardens'))
@@ -23,4 +23,15 @@ export const create_garden = async (name, plants, remind_time) => {
     };
     
     await setDoc(document_ref, data);
+}
+
+export const delete_garden = async (id, callback) => {
+    const gardenRef = doc(collection(db, 'gardens'), id);
+    try {
+      await deleteDoc(gardenRef);
+      console.log('Document successfully deleted!');
+      callback()
+    } catch (error) {
+      console.error('Error deleting document: ', error);
+    }
 }
