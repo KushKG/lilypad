@@ -1,5 +1,5 @@
 import { db } from "./firebase_config";
-import { collection, getDocs, doc, setDoc, deleteDoc } from "firebase/firestore";
+import { collection, getDocs, doc, setDoc, deleteDoc, updateDoc, arrayUnion, getDoc } from "firebase/firestore";
 
 export const get_gardens = async () => {
     const snap = await getDocs(collection(db, 'gardens'))
@@ -34,4 +34,16 @@ export const delete_garden = async (id, callback) => {
     } catch (error) {
       console.error('Error deleting document: ', error);
     }
+}
+
+export const add_plant = async (garden_id, plant_data) => {
+  const gardenRef = doc(collection(db, 'gardens'), garden_id)
+  try {
+    await updateDoc(gardenRef, {
+      plants: arrayUnion(plant_data)
+    });
+    console.log("Garden updated")
+  } catch (error) {
+    console.error('Error adding plant: ', error);
+  }
 }

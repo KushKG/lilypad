@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function PlantListView({ data }) {
+export default function PlantListView({ data, actionElement }) {
     const [isExpanded, setIsExpanded] = useState(false);
 
     const toggleExpand = () => {
@@ -17,6 +17,9 @@ export default function PlantListView({ data }) {
         >
             <View style={styles.row}>
                 <Text style={styles.title}>{data.name}</Text>
+                <View style={styles.actionContainer}>
+                    {actionElement}
+                </View>
                 <Ionicons name={isExpanded ? 'chevron-up' : 'chevron-down'} size={24} color="black" />
             </View>
             {isExpanded && (
@@ -39,14 +42,20 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
         alignItems: 'center',
     },
     title: {
+        flex: 1, 
         fontSize: 18,
         fontWeight: 'bold',
     },
+    actionContainer: {
+        marginRight: 10, 
+        width: 40,
+        height: 40
+    },
     detailsContainer: {
         marginTop: 10,
+        marginLeft: 30,
     },
 });

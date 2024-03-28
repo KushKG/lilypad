@@ -2,6 +2,7 @@ export const search = (query, filters) => {
     return [
         {
             name: 'Cucumber',
+            plant_id: 'Cucumber',
             watering: 'low',
             sun: 'high',
             in_garden: false,
@@ -9,6 +10,7 @@ export const search = (query, filters) => {
         },
         {
             name: 'Carrot',
+            plant_id: 'Carrot',
             watering: 'high',
             sun: 'low',
             in_garden: true,

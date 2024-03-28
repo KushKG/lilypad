@@ -4,14 +4,15 @@ import PlantListView from "../components/PlantListView";
 
 export default function GardenView({ route, navigation }) {
   const [plants, setPlants] = useState(route.params.data.plants);
-
+  const [gardenId, setGardenId] = useState(route.params.data.id)
   const data = route.params.data
   for (let plant of data.plants) {
     plant["name"] = plant["plant_id"]
   }
 
   const addPlant = () => {
-    navigation.navigate("Search Page")
+    console.log(gardenId)
+    navigation.navigate("Search Page",  {"gardenId": gardenId})
   };
 
 
