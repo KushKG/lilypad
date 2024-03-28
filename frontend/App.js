@@ -1,56 +1,60 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { search } from './src/controllers/data_controller';
 import PlantListView from './src/components/PlantListView';
 import { get_gardens } from './src/controllers/firebase_controller';
 import { useEffect, useState } from 'react';
 import Gardens from './src/pages/Gardens';
 import Search from './src/pages/Search';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import * as React from 'react';
+
+
 
 export default function App() {
 
+  const layout = useWindowDimensions();
 
-  const [gardens, setGardens] = useState([])
+  const [index, setIndex] = React.useState(0);
+  const [routes] = React.useState([
+    { key: 'first', title: 'First' },
+    { key: 'second', title: 'Second' },
+  ]);
 
-  useEffect(() => {
-    const getGardens = async () => {
-      const temp_gardens = await get_gardens()
-      setGardens(temp_gardens)
-    }
-    getGardens()
-  }, [])
+  const renderScene = SceneMap({
+    first: Gardens,
+    second: Search,
+  });
+  
 
-  const Tab = createBottomTabNavigator();
-
-  return (
-    <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Home" component={Gardens} />
-        <Tab.Screen name="Settings" component={Search} />
-      </Tab.Navigator>
-    </NavigationContainer>
+  const renderTabBar = props => (
+    <TabBar
+      {...props}
+      style={styles.tabBar}
+      indicatorStyle={styles.indicator}
+    />
   );
 
   return (
-    <View style={styles.container}>
-      {/* {search('example', {}).map((data, index) => {
-        return <PlantListView data={data} key={index} />
-      })} */}
-      {gardens.map(garden => {
-        return <Text key={garden.id}>{garden.name} {garden.id}</Text>
-      })}
-    </View>
+    <TabView
+      navigationState={{ index, routes }}
+      renderScene={renderScene}
+      onIndexChange={setIndex}
+      initialLayout={{ width: layout.width }}
+      renderTabBar={renderTabBar}
+    />
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+  tabBar: {
+    backgroundColor: '#50382A',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
+  indicator: {
+    backgroundColor: 'white',
   },
 });
-

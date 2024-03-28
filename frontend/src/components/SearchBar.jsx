@@ -1,18 +1,22 @@
 import React, { useState } from "react";
 import { View, TextInput, Button, FlatList, Text } from "react-native";
+import { search } from "../controllers/data_controller";
+import PlantListView from "./PlantListView";
 
 const SearchBar = () => {
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
   const handleSearch = () => {
-    // const filteredResults = dummyData.filter((item) =>
-    //   item.toLowerCase().includes(searchText.toLowerCase())
-    // );
-    // setSearchResults(filteredResults);
+    const results = search("Berr", {});
+    setSearchResults(results);
   };
 
-  const renderItem = ({ item }) => <Text style={{ padding: 10 }}>{item}</Text>;
+  const renderItem = ({ item }) => (
+    <View style={{ padding: 10 }}>
+      <PlantListView data={item}></PlantListView>
+    </View>
+  );
 
   return (
     <View style={{ flex: 1, padding: 40 }}>
@@ -32,11 +36,12 @@ const SearchBar = () => {
       <FlatList
         data={searchResults}
         renderItem={renderItem}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item, index) => {
+          return index
+        }}
       />
     </View>
   );
 };
 
 export default SearchBar;
-
