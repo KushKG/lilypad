@@ -8,6 +8,7 @@ import Gardens from './src/pages/Gardens';
 import Search from './src/pages/Search';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import * as React from 'react';
+import GardensNavigation from './src/pages/GardensNavigation';
 
 
 
@@ -22,7 +23,7 @@ export default function App() {
   ]);
 
   const renderScene = SceneMap({
-    first: Gardens,
+    first: GardensNavigation,
     second: Search,
   });
   
