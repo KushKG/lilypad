@@ -1,24 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import PlantListView from "../components/PlantListView";
+import GardenContext from "../components/GardenContext";
 
 export default function GardenView({ route, navigation }) {
-  const [plants, setPlants] = useState(route.params.data.plants);
-  const [gardenId, setGardenId] = useState(route.params.data.id)
-  const data = route.params.data
-  for (let plant of data.plants) {
+  const { gardens } = useContext(GardenContext);
+  const [garden, setGarden] = useState(gardens[route.params.index]);
+
+  for (let plant of garden.plants) {
     plant["name"] = plant["plant_id"]
   }
 
-  const addPlant = () => {
-    console.log(gardenId)
-    navigation.navigate("Search Page",  {"gardenId": gardenId})
-  };
+  useEffect(() => {
+    setGarden(gardens[route.params.index])
+  }, [gardens])
 
+
+  const addPlant = () => {
+    console.log(garden.id)
+    navigation.navigate("Search Page",  {"gardenId": garden.id})
+  };
 
   return (
     <View>
-      {plants.map((plant, index) => (
+      {garden.plants.map((plant, index) => (
         <PlantListView key={index} data={plant} />
       ))}
       <TouchableOpacity onPress={addPlant} style={styles.addButton}>

@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, TextInput, Button, FlatList, TouchableOpacity, StyleSheet, Modal, Text } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import { search } from "../controllers/data_controller";
 import PlantListView from "./PlantListView";
 import { add_plant } from "../controllers/firebase_controller";
 import { get_gardens } from "../controllers/firebase_controller";
+import GardenContext from "./GardenContext";
 
 const SearchBar = ({ gardenId }) => {
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [quantity, setQuantity] = useState(1); 
-  const [gardens, setGardens] = useState([]);
   const [currentPlant, setCurrentPlant] = useState({});
+  const { gardens } = useContext(GardenContext)
 
   const handleSearch = () => {
     const results = search("Berr", {});
@@ -30,15 +31,6 @@ const SearchBar = ({ gardenId }) => {
     console.log(item)
     setModalVisible(true);
   };
-
-  const updateGardens = async () => {
-    const tempGardens = await get_gardens();
-    setGardens(tempGardens);
-  };
-
-  useEffect(() => {
-    updateGardens();
-  }, []);
 
   const saveToGarden = (garden) => {
     if (garden) {

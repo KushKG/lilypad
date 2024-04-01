@@ -1,36 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Text, View, StyleSheet, Button, TouchableOpacity, Alert } from 'react-native';
 import { delete_garden, get_gardens } from '../controllers/firebase_controller';
 import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { GardenProvider } from '../components/GardenContext';
+import GardenContext from '../components/GardenContext';
 
 export default function Gardens({ navigation }) {
-  const [gardens, setGardens] = useState([]);
-
-  useEffect(() => {
-    updateGardens()
-  }, []);
-
-  useFocusEffect(
-    React.useCallback(() => {
-      updateGardens()
-    }, [])
-  );
-
-  const updateGardens = () => {
-    const fetchGardens = async () => {
-      const temp_gardens = await get_gardens();
-      setGardens(temp_gardens);
-    };
-    fetchGardens();
-  }
+  const { gardens } = useContext(GardenContext)
 
   const navigateToNewPage = () => {
     navigation.navigate('Create Garden');
   };
 
   const navigateToGarden = (index) => {
-    navigation.navigate('Garden View', {"data": gardens[index]});
+    navigation.navigate('Garden View', {"index": index});
   };
 
   const deleteGarden = (index) => {
@@ -46,7 +30,7 @@ export default function Gardens({ navigation }) {
         {
           text: "Delete",
           onPress: () => {
-            delete_garden(gardens[index].id, updateGardens)
+            delete_garden(gardens[index].id, null)
             console.log("Delete Pressed");
           },
           style: "destructive"
@@ -56,19 +40,19 @@ export default function Gardens({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
-      {gardens.map((garden, index) => (
-        <View key={garden.id} style={styles.gardenContainer}>
-          <TouchableOpacity onPress={() => navigateToGarden(index)} style={styles.garden}>
-            <Text style={styles.text}>{garden.name}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => deleteGarden(index)} style={styles.deleteButton}>
-            <Text style={styles.deleteText}>Delete</Text>
-          </TouchableOpacity>
-        </View>
-      ))}
-      <Button title={"Add Garden"} onPress={navigateToNewPage}>click me</Button>
-    </View>
+      <View style={styles.container}>
+        {gardens.map((garden, index) => (
+          <View key={garden.id} style={styles.gardenContainer}>
+            <TouchableOpacity onPress={() => navigateToGarden(index)} style={styles.garden}>
+              <Text style={styles.text}>{garden.name}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => deleteGarden(index)} style={styles.deleteButton}>
+              <Text style={styles.deleteText}>Delete</Text>
+            </TouchableOpacity>
+          </View>
+        ))}
+        <Button title={"Add Garden"} onPress={navigateToNewPage}>click me</Button>
+      </View>
   );
 }
 
