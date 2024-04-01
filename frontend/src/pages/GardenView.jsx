@@ -12,6 +12,12 @@ export default function GardenView({ route, navigation }) {
   }
 
   useEffect(() => {
+    navigation.setOptions({
+      title: garden.name,
+      headerStyle: {
+        backgroundColor: '#B8E6AC',
+      },
+    });
     setGarden(gardens[route.params.index])
   }, [gardens])
 
@@ -22,28 +28,42 @@ export default function GardenView({ route, navigation }) {
   };
 
   return (
-    <View>
-      {garden.plants.map((plant, index) => (
-        <PlantListView key={index} data={plant} />
-      ))}
+    <View style={styles.container}>
+      <View style={styles.content}>
+        {garden.plants.map((plant, index) => (
+          <PlantListView key={index} data={plant} />
+        ))}
+      </View>
       <TouchableOpacity onPress={addPlant} style={styles.addButton}>
-        <Text style={styles.addButtonText}>Add Plant</Text>
+        <Text style={styles.addButtonText}>+</Text>
       </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    position: 'relative',
+  },
+  content: {
+    flex: 1,
+  },
   addButton: {
-    backgroundColor: "blue",
+    backgroundColor: 'green',
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 35,
     margin: 10,
+    width: 70,
+    height: 70,
+    alignItems: 'center',
+    bottom: 50,
+    left: 300,
   },
   addButtonText: {
     color: "white",
     textAlign: "center",
-    fontSize: 16,
+    fontSize: 40,
     fontWeight: "bold",
   },
 });
