@@ -1,16 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-    View,
-    TextInput,
-    Button,
-    FlatList,
-    TouchableOpacity,
-    StyleSheet,
-    Modal,
-    Text,
-} from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { search } from "../controllers/data_controller";
+import { View, TextInput, TouchableOpacity, StyleSheet, Modal, Text, ScrollView, FlatList, Button } from "react-native";
+import { Ionicons } from '@expo/vector-icons';
+import { fetchPlants, getPlantDetails, search } from "../controllers/data_controller";
 import PlantListView from "./PlantListView";
 import { add_plant } from "../controllers/firebase_controller";
 import GardenContext from "./GardenContext";
@@ -25,10 +16,13 @@ const SearchBar = ({ gardenId }) => {
     const [currentPlant, setCurrentPlant] = useState({});
     const { gardens } = useContext(GardenContext);
 
-    const handleSearch = () => {
-        const results = search("Berr", {});
-        setSearchResults(results);
-    };
+  const handleSearch = async () => {
+    const results = await fetchPlants(searchText, {});
+    // const other = await getPlantDetails(results[0].id)
+    // console.log(other)
+    // console.log(results)
+    setSearchResults(results);
+  };
 
     const renderItem = ({ item }) => (
         <View style={{ padding: 10 }}>
@@ -72,11 +66,13 @@ const SearchBar = ({ gardenId }) => {
             <TouchableOpacity onPress={() => setFilterModalVisible(!filterModalVisible)}>
                 <Ionicons name="filter" size={24} color="black" />
             </TouchableOpacity>
+          <ScrollView>
             <FlatList
                 data={searchResults}
                 renderItem={renderItem}
                 keyExtractor={(item, index) => index.toString()}
             />
+          </ScrollView>
             <AddPlantModal
                 modalVisible={addModalVisible}
                 saveToGarden={saveToGarden}
@@ -110,4 +106,37 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         padding: 5,
     },
+  },
+  quantityContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginVertical: 10,
+  },
+  quantityText: {
+    fontSize: 18,
+  },
+  dropdownTitle: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  dropdownContainer: {
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 5,
+    marginBottom: 10,
+    maxHeight: 200,
+  },
+  dropdownItem: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: 'gray',
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  searchIcon: {
+    marginLeft: 10,
+  },
 });
