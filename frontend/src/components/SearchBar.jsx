@@ -85,7 +85,10 @@ const SearchBar = ({ gardenId }) => {
                         borderWidth: 1,
                         marginBottom: 10,
                         padding: 5,
+                        borderRadius: 20, 
                         flex: 1,
+                        paddingLeft: 10,
+                        marginLeft: 10
                     }}
                     onChangeText={(text) => setSearchText(text)}
                     onSubmitEditing={handleSearch}
