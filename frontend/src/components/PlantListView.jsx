@@ -1,13 +1,22 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { getPlantDetails } from "../controllers/data_controller";
 
 export default function PlantListView({ data, actionElement }) {
     const [isExpanded, setIsExpanded] = useState(false);
+    const [details, setDetails] = useState(null);
 
-    const toggleExpand = () => {
+    const toggleExpand = async () => {
+        if (!details) {
+            console.log(data.id)
+            const response = await getPlantDetails(data.id)
+            console.log(response)
+            setDetails(response)
+        }
+
         setIsExpanded(!isExpanded);
-    };
+    }; 
 
     return (
         <TouchableOpacity
@@ -16,15 +25,21 @@ export default function PlantListView({ data, actionElement }) {
             activeOpacity={1} 
         >
             <View style={styles.row}>
-                <Text style={styles.title}>{data.name}</Text>
+                <Image
+                    source={{ uri: data.image_url }}
+                    style={styles.image}
+                />
+                <View style={styles.titleContainer}>
+                    <Text style={styles.title}>{data.common_name}</Text>
+                    <Ionicons name={isExpanded ? 'chevron-up' : 'chevron-down'} size={24} color="black" />
+                </View>
                 <View style={styles.actionContainer}>
                     {actionElement}
                 </View>
-                <Ionicons name={isExpanded ? 'chevron-up' : 'chevron-down'} size={24} color="black" />
             </View>
-            {isExpanded && (
+            {isExpanded && details && (
                 <View style={styles.detailsContainer}>
-                    <Text>Watering: {data.watering}</Text>
+                    <Text>Watering: {details.light}</Text>
                     <Text>Sun: {data.sun}</Text>
                 </View>
             )}
@@ -44,18 +59,33 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
+    titleContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
     title: {
         flex: 1, 
         fontSize: 18,
         fontWeight: 'bold',
+        marginLeft: 10,
     },
     actionContainer: {
-        marginRight: 10, 
+        marginRight: 0, 
         width: 40,
         height: 40
     },
     detailsContainer: {
         marginTop: 10,
         marginLeft: 30,
+    },
+    image: {
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+        marginRight: 10,
+    },
+    expandedContainer: {
+        marginBottom: 20, // Adjust as needed
     },
 });

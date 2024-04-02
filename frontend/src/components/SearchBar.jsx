@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, TextInput, Button, FlatList, TouchableOpacity, StyleSheet, Modal, Text } from "react-native";
+import { View, TextInput, TouchableOpacity, StyleSheet, Modal, Text, ScrollView, FlatList, Button } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
-import { search } from "../controllers/data_controller";
+import { fetchPlants, getPlantDetails } from "../controllers/data_controller";
 import PlantListView from "./PlantListView";
 import { add_plant } from "../controllers/firebase_controller";
 import { get_gardens } from "../controllers/firebase_controller";
@@ -15,8 +15,11 @@ const SearchBar = ({ gardenId }) => {
   const [currentPlant, setCurrentPlant] = useState({});
   const { gardens } = useContext(GardenContext)
 
-  const handleSearch = () => {
-    const results = search("Berr", {});
+  const handleSearch = async () => {
+    const results = await fetchPlants(searchText, {});
+    // const other = await getPlantDetails(results[0].id)
+    // console.log(other)
+    // console.log(results)
     setSearchResults(results);
   };
 
@@ -58,25 +61,33 @@ const SearchBar = ({ gardenId }) => {
   };
 
   return (
-    <View style={{ flex: 1, padding: 40 }}>
-      <TextInput
-        style={{
-          height: 40,
-          borderColor: "gray",
-          borderWidth: 1,
-          marginBottom: 10,
-          padding: 5,
-        }}
-        onChangeText={(text) => setSearchText(text)}
-        value={searchText}
-        placeholder="Search..."
-      />
-      <Button title="Search" onPress={handleSearch} />
-      <FlatList
-        data={searchResults}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => index.toString()}
-      />
+    <View style={{ flex: 1, paddingTop: 60, paddingLeft: 10, paddingRight: 10 }}>
+      <View style={styles.searchContainer}>
+        <TextInput
+          style={{
+            height: 40,
+            borderColor: "gray",
+            borderWidth: 1,
+            marginBottom: 10,
+            padding: 5,
+            flex: 1,
+          }}
+          onChangeText={(text) => setSearchText(text)}
+          value={searchText}
+          placeholder="Search..."
+        />
+        <TouchableOpacity onPress={handleSearch}>
+          <Ionicons name="search" size={24} color="black" style={styles.searchIcon} />
+        </TouchableOpacity>
+      </View>
+      <ScrollView>
+        <FlatList
+          data={searchResults}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      </ScrollView>
+      
       <Modal
         animationType="slide"
         transparent={true}
@@ -185,5 +196,12 @@ const styles = StyleSheet.create({
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: 'gray',
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  searchIcon: {
+    marginLeft: 10,
   },
 });
