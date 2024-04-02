@@ -88,6 +88,7 @@ const SearchBar = ({ gardenId }) => {
                         flex: 1,
                     }}
                     onChangeText={(text) => setSearchText(text)}
+                    onSubmitEditing={handleSearch}
                     value={searchText}
                     placeholder="Search..."
                 />
