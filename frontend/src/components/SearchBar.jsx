@@ -6,9 +6,9 @@ import {
     StyleSheet,
     Modal,
     Text,
-    ScrollView,
     FlatList,
     Button,
+    SafeAreaView
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import {
@@ -108,13 +108,13 @@ const SearchBar = ({ gardenId }) => {
                     />
                 </TouchableOpacity>
             </View>
-            <ScrollView>
+            <SafeAreaView style={{flex: 1}}>
                 <FlatList
                     data={searchResults}
                     renderItem={renderItem}
                     keyExtractor={(item, index) => index.toString()}
                 />
-            </ScrollView>
+            </SafeAreaView>
             <AddPlantModal
                 modalVisible={addModalVisible}
                 saveToGarden={saveToGarden}
