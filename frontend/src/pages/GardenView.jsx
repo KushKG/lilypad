@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import PlantListView from "../components/PlantListView";
 import GardenContext from "../components/GardenContext";
+import AddButton from "../components/AddButton";
 
 export default function GardenView({ route, navigation }) {
   const { gardens } = useContext(GardenContext);
@@ -34,9 +35,7 @@ export default function GardenView({ route, navigation }) {
           <PlantListView key={index} data={plant} />
         ))}
       </View>
-      <TouchableOpacity onPress={addPlant} style={styles.addButton}>
-        <Text style={styles.addButtonText}>+</Text>
-      </TouchableOpacity>
+      <AddButton addFunction={addPlant}/>
     </View>
   );
 }
