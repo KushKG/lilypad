@@ -8,7 +8,8 @@ import {
     Text,
     FlatList,
     Button,
-    SafeAreaView
+    SafeAreaView,
+    ActivityIndicator,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import {
@@ -28,14 +29,22 @@ const SearchBar = ({ gardenId }) => {
     const [addModalVisible, setAddModalVisible] = useState(false);
     const [filterModalVisible, setFilterModalVisible] = useState(false);
     const [currentPlant, setCurrentPlant] = useState({});
+    const [loading, setLoading] = useState(false);
+    const [foundResults, setFoundResults] = useState(true);
+
     const { gardens } = useContext(GardenContext);
 
+
     const handleSearch = async () => {
+        setLoading(true);
+
         const results = await fetchPlants(searchText, {});
         // const other = await getPlantDetails(results[0].id)
         // console.log(other)
         // console.log(results)
         setSearchResults(results);
+        setFoundResults(results.length != 0);
+        setLoading(false);
     };
 
     const renderItem = ({ item }) => (
@@ -85,7 +94,10 @@ const SearchBar = ({ gardenId }) => {
                         borderWidth: 1,
                         marginBottom: 10,
                         padding: 5,
+                        borderRadius: 20, 
                         flex: 1,
+                        paddingLeft: 10,
+                        marginLeft: 10
                     }}
                     onChangeText={(text) => setSearchText(text)}
                     onSubmitEditing={handleSearch}
@@ -109,12 +121,22 @@ const SearchBar = ({ gardenId }) => {
                     />
                 </TouchableOpacity>
             </View>
-            <SafeAreaView style={{flex: 1}}>
-                <FlatList
-                    data={searchResults}
-                    renderItem={renderItem}
-                    keyExtractor={(item, index) => index.toString()}
-                />
+            <SafeAreaView style={{ flex: 1 }}>
+                {loading ? (
+                    <ActivityIndicator />
+                ) : !foundResults ? (
+                    <View style={styles.noResultsContainer}>
+                        <Text style={styles.noResults}>
+                            No results found :(
+                        </Text>
+                    </View>
+                ) : (
+                    <FlatList
+                        data={searchResults}
+                        renderItem={renderItem}
+                        keyExtractor={(item, index) => index.toString()}
+                    />
+                )}
             </SafeAreaView>
             <AddPlantModal
                 modalVisible={addModalVisible}
@@ -180,5 +202,12 @@ const styles = StyleSheet.create({
     },
     icon: {
         marginLeft: 10,
+    },
+    noResults: {
+        textAlign: "center",
+        fontSize: 24,
+    },
+    noResultsContainer: {
+        marginTop: 20,
     },
 });

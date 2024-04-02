@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, View, Text, StyleSheet, Button } from 'react-native';
+import { Modal, View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
+import { AntDesign } from '@expo/vector-icons'; // Import AntDesign icons
 import DropDownPicker from 'react-native-dropdown-picker';
+import { getZoneFilters } from '../controllers/data_controller';
 
 export default function SearchFilterModal({ modalVisible, setModalVisible }) {
 
@@ -16,15 +18,15 @@ export default function SearchFilterModal({ modalVisible, setModalVisible }) {
       { label: 'Coarse', value: 'coarse' },
       { label: 'Medium', value: 'medium' },
       { label: 'Fine', value: 'fine' }
-    ]
+    ],
+    zone: getZoneFilters()
   };
 
-  const [lightFilter, setLightFilter] = useState('dummy1');
   const [filters, setFilters] = useState({});
   const [light, setLight] = useState(data.light[0].value);
   const [lightOpen, setLightOpen] = useState(false)
-  const [soilTexture, setSoilTexture] = useState(data.soil_texture[0].value);
-  const [soilTextureOpen, setSoilTextureOpen] = useState(false)
+  const [zone, setZone] = useState(data.soil_texture[0].value);
+  const [zoneOpen, setZoneOpen] = useState(false)
 
   const [dropdownInfo, setDropdownInfo] = useState({});
 
@@ -39,39 +41,40 @@ export default function SearchFilterModal({ modalVisible, setModalVisible }) {
     >
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          <Text>This is a Search Filter modal</Text>
-          <Text>Add your filter options here</Text>
-
-        
-
-        <Text>Light</Text>
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={() => setModalVisible(false)}
+          >
+            <AntDesign name="close" size={24} color="black" />
+          </TouchableOpacity>
+          <Text style={styles.text}>Light</Text>
           <DropDownPicker 
-              items={data.light}
-              open={lightOpen}
-              value={light}
-              containerStyle={styles.dropdownContainer}
-              style={styles.dropdown}
-              dropDownStyle={{ backgroundColor: '#fafafa' }}
-              setOpen={setLightOpen}
-              setValue={setLight}
-              dropDownDirection="TOP"
-            />
+            items={data.light}
+            open={lightOpen}
+            value={light}
+            containerStyle={styles.dropdownContainer}
+            style={styles.dropdown}
+            dropDownStyle={{ backgroundColor: '#fafafa' }}
+            setOpen={setLightOpen}
+            setValue={setLight}
+            dropDownDirection="TOP"
+          />
 
-        <Text>Soil Texture</Text>
+          <Text style={styles.text}>Zone</Text>
           <DropDownPicker 
-              items={data.soil_texture}
-              open={soilTextureOpen}
-              value={soilTexture}
-              containerStyle={styles.dropdownContainer}
-              style={styles.dropdown}
-              dropDownStyle={{ backgroundColor: '#fafafa' }}
-              setOpen={setSoilTextureOpen}
-              setValue={setSoilTexture}
-            />
+            items={data.zone}
+            open={zoneOpen}
+            value={zone}
+            containerStyle={styles.dropdownContainer}
+            style={styles.dropdown}
+            dropDownStyle={{ backgroundColor: '#fafafa' }}
+            setOpen={setZoneOpen}
+            setValue={setZone}
+            searchable={true}
+            searchPlaceholder='Search your Country / State / Zone'
+          />
 
-          {/* Add similar DropDownPicker components for other filters */}
-
-          <Button onPress={() => setModalVisible(false)} title="Update Results"></Button>
+          <Button onPress={() => setModalVisible(false)} title="Update Results" />
         </View>
       </View>
     </Modal>
@@ -97,7 +100,7 @@ const styles = StyleSheet.create({
       width: 0,
       height: 2,
     },
-    width: '80%',
+    width: '80%'
   },
   dropdownContainer: {
     marginBottom: 10,
@@ -106,4 +109,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#fafafa',
     zIndex: 100
   },
+  closeButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    padding: 5,
+  },
+  text: {
+    marginBottom: 5,
+    marginTop: 10
+  }
 });
