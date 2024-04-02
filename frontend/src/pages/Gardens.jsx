@@ -96,6 +96,7 @@ import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { GardenProvider } from '../components/GardenContext';
 import GardenContext from '../components/GardenContext';
+import AddButton from '../components/AddButton';
 
 export default function Gardens({ navigation }) {
   const { gardens } = useContext(GardenContext);
@@ -147,11 +148,10 @@ export default function Gardens({ navigation }) {
             <TouchableOpacity onPress={() => deleteGarden(index)} style={[styles.deleteButton, { height: 50 }]}>
               <Text style={styles.deleteText}>Delete</Text>
             </TouchableOpacity>
-          }
-        </View>
-      ))}
-      <Button title={"Add Garden"} onPress={navigateToNewPage}>click me</Button>
-    </View>
+          </View>
+        ))}
+       <AddButton addFunction={navigateToNewPage}/>
+      </View>
   );
 }
 

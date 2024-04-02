@@ -9,12 +9,9 @@ export default function PlantListView({ data, actionElement }) {
 
     const toggleExpand = async () => {
         if (!details) {
-            console.log(data.id)
             const response = await getPlantDetails(data.id)
-            console.log(response)
             setDetails(response)
         }
-
         setIsExpanded(!isExpanded);
     }; 
 
@@ -39,8 +36,8 @@ export default function PlantListView({ data, actionElement }) {
             </View>
             {isExpanded && details && (
                 <View style={styles.detailsContainer}>
-                    <Text>Watering: {details.light}</Text>
-                    <Text>Sun: {data.sun}</Text>
+                    <Text>Sun: {details.main_species.growth.light}</Text>
+                    <Text>Watering: {details.main_species.growth.maximum_precipitation[0]}</Text>
                 </View>
             )}
         </TouchableOpacity>
