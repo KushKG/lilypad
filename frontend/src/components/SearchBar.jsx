@@ -106,7 +106,6 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         padding: 5,
     },
-  },
   quantityContainer: {
     flexDirection: 'row',
     alignItems: 'center',
