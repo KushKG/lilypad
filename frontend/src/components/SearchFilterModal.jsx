@@ -28,7 +28,13 @@ export default function SearchFilterModal({ modalVisible, setModalVisible }) {
   const [zone, setZone] = useState(data.soil_texture[0].value);
   const [zoneOpen, setZoneOpen] = useState(false)
 
-  const [dropdownInfo, setDropdownInfo] = useState({});
+  const updateFilter = () => {
+    setFilters({
+      light: light,
+      zone_id: zone
+    })
+    setModalVisible(false)
+  }
 
   return (
     <Modal
@@ -74,7 +80,7 @@ export default function SearchFilterModal({ modalVisible, setModalVisible }) {
             searchPlaceholder='Search your Country / State / Zone'
           />
 
-          <Button onPress={() => setModalVisible(false)} title="Update Results" />
+          <Button onPress={updateFilter} title="Update Results" />
         </View>
       </View>
     </Modal>

@@ -35,10 +35,10 @@ const SearchBar = ({ gardenId }) => {
     const { gardens } = useContext(GardenContext);
 
 
-    const handleSearch = async () => {
+    const handleSearch = async (filters={}) => {
         setLoading(true);
 
-        const results = await fetchPlants(searchText, {});
+        const results = await fetchPlants(searchText, filters);
         // const other = await getPlantDetails(results[0].id)
         // console.log(other)
         // console.log(results)
@@ -70,6 +70,10 @@ const SearchBar = ({ gardenId }) => {
             add_plant(gardenId, currentPlant);
         }
     };
+
+    const updateResults = filters => {
+        handleSearch(filters)
+    }
 
     const ActionButton = ({ onPress }) => (
         <TouchableOpacity onPress={onPress} style={styles.actionButton}>
@@ -148,6 +152,7 @@ const SearchBar = ({ gardenId }) => {
             <SearchFilterModal
                 modalVisible={filterModalVisible}
                 setModalVisible={setFilterModalVisible}
+                updateResults={updateResults}
             />
         </View>
     );

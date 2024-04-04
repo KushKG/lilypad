@@ -2,6 +2,10 @@ const apiKey = '8OS2mP4_wX4djoMj3VzXcVo4TXSb-2Asc9HhxOxq6DY';
 const apiUrl = 'https://trefle.io/api/v1/plants';
 
 export async function fetchPlants(query, filters) {
+  let url = `${apiUrl}/search?token=${apiKey}&q=${query}`
+  for (const [key, val] of Object.entries(filters)) {
+    
+  }
   return await fetch(`${apiUrl}/search?token=${apiKey}&q=${query}`)
     .then(response => {
       if (!response.ok) {
