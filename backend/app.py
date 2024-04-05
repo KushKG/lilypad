@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 import pandas as pd
+import json
 
 app = Flask(__name__)
 
@@ -8,18 +9,21 @@ df = pd.read_csv('plants.csv')
 @app.route('/search', methods=['POST', 'GET'])
 def search():
     query = request.args.get('q')
-    print("MIHIR SUCKS DICK HARD")
-    filters = request.json
-    print(query)
-    print(filters)
+    filters = json.loads(request.args.get('filters'))
+    region = int(request.args.get('region'))
+
     matching_rows = []
     new_df = df.copy(deep=True)
+    new_df = df[df['Region'] == region]
 
-    # for column, value in filters.items():
-    #     new_df = df[df[column] == value]
+    for column, value in filters.items():
+        new_df = df[df[column] == value]
     
     if query and query != "":
-        new_df = new_df[df['Name'].str.contains(query)]
+        query = query.lower()
+        new_df = new_df[df['Name'].str.contains(query, case=False) | df['Description'].str.contains(query, case=False)]
+
+    new_df = new_df.drop_duplicates(subset=['Name'], keep='first')
 
     matching_rows = new_df.to_dict('records')
 

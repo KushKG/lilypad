@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { getPlantDetails } from "../controllers/data_controller";
+import { getPlantDetailsByName } from "../controllers/data_controller";
 
 export default function PlantListView({ data, actionElement }) {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -9,7 +9,7 @@ export default function PlantListView({ data, actionElement }) {
 
     const toggleExpand = async () => {
         if (!details) {
-            const response = await getPlantDetails(data.id)
+            const response = await getPlantDetailsByName(data.Name)
             setDetails(response)
         }
         setIsExpanded(!isExpanded);
@@ -23,11 +23,11 @@ export default function PlantListView({ data, actionElement }) {
         >
             <View style={styles.row}>
                 <Image
-                    source={{ uri: data.image_url }}
+                    source={{ uri: data.Image }}
                     style={styles.image}
                 />
                 <View style={styles.titleContainer}>
-                    <Text style={styles.title}>{data.common_name ? data.common_name : data.scientific_name}</Text>
+                    <Text style={styles.title}>{data.Name}</Text>
                     <Ionicons name={isExpanded ? 'chevron-up' : 'chevron-down'} size={24} color="black" />
                 </View>
                 <View style={styles.actionContainer}>
@@ -36,8 +36,8 @@ export default function PlantListView({ data, actionElement }) {
             </View>
             {isExpanded && details && (
                 <View style={styles.detailsContainer}>
-                    <Text>Sun: {details.main_species.growth.light}</Text>
-                    <Text>Watering: {details.main_species.growth.maximum_precipitation[0]}</Text>
+                    <Text>Sun: {details['Heat Tolerance']}</Text>
+                    <Text>Watering: {details['Pest Tolerance']}</Text>
                 </View>
             )}
         </TouchableOpacity>
