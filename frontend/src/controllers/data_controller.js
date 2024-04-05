@@ -1,10 +1,16 @@
-const apiUrl = 'http://localhost:5000'; // Assuming your Flask app is running locally on port 5000
+const apiUrl = 'http://127.0.0.1:5000'; // Assuming your Flask app is running locally on port 5000
 
 export async function fetchPlants(query, filters) {
   let url = `${apiUrl}/search?q=${query}`
   
   try {
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json' // Specify the content type
+      },
+      body: JSON.stringify(filters)
+    });
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }

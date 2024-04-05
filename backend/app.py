@@ -5,16 +5,18 @@ app = Flask(__name__)
 
 df = pd.read_csv('plants.csv')
 
-@app.route('/search')
+@app.route('/search', methods=['POST', 'GET'])
 def search():
     query = request.args.get('q')
+    print("MIHIR SUCKS DICK HARD")
     filters = request.json
-
+    print(query)
+    print(filters)
     matching_rows = []
     new_df = df.copy(deep=True)
 
-    for column, value in filters.items():
-        new_df = df[df[column] == value]
+    # for column, value in filters.items():
+    #     new_df = df[df[column] == value]
     
     if query and query != "":
         new_df = new_df[df['Name'].str.contains(query)]

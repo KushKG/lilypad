@@ -19,7 +19,6 @@ export default function SearchFilterModal({ modalVisible, setModalVisible }) {
       { label: 'Medium', value: 'medium' },
       { label: 'Fine', value: 'fine' }
     ],
-    zone: getZoneFilters()
   };
 
   const [filters, setFilters] = useState({});
@@ -67,18 +66,6 @@ export default function SearchFilterModal({ modalVisible, setModalVisible }) {
           />
 
           <Text style={styles.text}>Zone</Text>
-          <DropDownPicker 
-            items={data.zone}
-            open={zoneOpen}
-            value={zone}
-            containerStyle={styles.dropdownContainer}
-            style={styles.dropdown}
-            dropDownStyle={{ backgroundColor: '#fafafa' }}
-            setOpen={setZoneOpen}
-            setValue={setZone}
-            searchable={true}
-            searchPlaceholder='Search your Country / State / Zone'
-          />
 
           <Button onPress={updateFilter} title="Update Results" />
         </View>

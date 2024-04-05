@@ -41,7 +41,7 @@ const SearchBar = ({ gardenId }) => {
         const results = await fetchPlants(searchText, filters);
         // const other = await getPlantDetails(results[0].id)
         // console.log(other)
-        // console.log(results)
+        console.log(results)
         setSearchResults(results);
         setFoundResults(results.length != 0);
         setLoading(false);
