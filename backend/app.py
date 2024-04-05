@@ -24,6 +24,7 @@ def search():
         new_df = new_df[df['Name'].str.contains(query, case=False) | df['Description'].str.contains(query, case=False)]
 
     new_df = new_df.drop_duplicates(subset=['Name'], keep='first')
+    new_df = new_df.dropna(subset=['Image'])
 
     matching_rows = new_df.to_dict('records')
 
@@ -33,8 +34,9 @@ def search():
 @app.route('/plant')
 def plant():
     query = request.args.get('name')
+    region = int(request.args.get('region'))
 
-    plant_row = df[df['Name'] == query]
+    plant_row = df[(df['Name'] == query) & (df['Region'] == region)]
 
     plant_row = plant_row.to_dict('records')
 

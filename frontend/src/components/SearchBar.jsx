@@ -37,7 +37,6 @@ const SearchBar = ({ gardenId }) => {
 
     const handleSearch = async (filters={}) => {
         setLoading(true);
-
         const results = await fetchPlants(searchText, filters);
         // const other = await getPlantDetails(results[0].id)
         // console.log(other)
@@ -104,11 +103,11 @@ const SearchBar = ({ gardenId }) => {
                         marginLeft: 10
                     }}
                     onChangeText={(text) => setSearchText(text)}
-                    onSubmitEditing={handleSearch}
+                    onSubmitEditing={() => handleSearch()}
                     value={searchText}
                     placeholder="Search..."
                 />
-                <TouchableOpacity onPress={handleSearch}>
+                <TouchableOpacity onPress={() => handleSearch()}>
                     <Ionicons
                         name="search"
                         size={24}
