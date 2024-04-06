@@ -27,7 +27,7 @@ export default function PlantListView({ data, actionElement }) {
                     style={styles.image}
                 />
                 <View style={styles.titleContainer}>
-                    <Text style={styles.title}>{data.Name}</Text>
+                    <Text style={styles.title}>{data}</Text>
                     <Ionicons name={isExpanded ? 'chevron-up' : 'chevron-down'} size={24} color="black" />
                 </View>
                 <View style={styles.actionContainer}>

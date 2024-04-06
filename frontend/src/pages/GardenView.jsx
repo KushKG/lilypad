@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import PlantListView from "../components/PlantListView";
 import GardenContext from "../components/GardenContext";
 import AddButton from "../components/AddButton";
+import SwipeView from "../components/SwipeView";
 
 export default function GardenView({ route, navigation }) {
   const { gardens } = useContext(GardenContext);
@@ -38,6 +39,13 @@ export default function GardenView({ route, navigation }) {
       <AddButton addFunction={addPlant}/>
     </View>
   );
+
+  // return (
+  //   <View style={styles.container}>
+  //     <SwipeView plants={garden.plants} />
+  //     <AddButton addFunction={addPlant}/>
+  //   </View>
+  // );
 }
 
 const styles = StyleSheet.create({
