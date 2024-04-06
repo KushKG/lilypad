@@ -1,7 +1,7 @@
 import { db } from "./firebase_config";
 import { collection, getDocs, doc, setDoc, deleteDoc, updateDoc, arrayUnion, getDoc, onSnapshot } from "firebase/firestore";
-import firebase from 'firebase/app';
 import 'firebase/database';
+import { getPlantDetailsByName } from "./data_controller";
 
 export const get_gardens = async () => {
 
@@ -26,9 +26,10 @@ export const get_gardens_listener = (callback) => {
   });
   return unsubscribe;
 };
+
 export const create_garden = async (name, plants, remind_time) => {
     const collection_ref = collection(db, 'gardens');
-    const document_ref = doc(collection_ref); // use doc() function to reference a document
+    const document_ref = doc(collection_ref); 
     const data = {
         name: name,
         plants: plants,
@@ -49,14 +50,33 @@ export const delete_garden = async (id) => {
     }
 }
 
-export const add_plant = async (garden_id, plant_data) => {
+export const add_plant = async (garden_id, plant_name) => {
   const gardenRef = doc(collection(db, 'gardens'), garden_id)
   try {
     await updateDoc(gardenRef, {
-      plants: arrayUnion(plant_data)
+      plants: arrayUnion(plant_name)
     });
     console.log("Garden updated")
   } catch (error) {
     console.error('Error adding plant: ', error);
+  }
+}
+
+export const get_garden_data = async garden_id => {
+  const gardenRef = doc(collection(db, 'gardens'), garden_id)
+  try {
+    const docSnap = await getDoc(gardenRef);
+    const gardenData = docSnap.data();
+    const plants = gardenData.plants;
+    new_data = []
+    for (const plant of plants) {
+      const data = await getPlantDetailsByName(plant)
+      new_data.push(data)
+    }
+    gardenData.plants = new_data
+    return gardenData
+
+  } catch (error) {
+    console.error('Error getting plants: ', error);
   }
 }

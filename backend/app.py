@@ -4,7 +4,7 @@ import json
 
 app = Flask(__name__)
 
-df = pd.read_csv('plants.csv')
+df = pd.read_csv('plants_3.csv')
 
 @app.route('/search', methods=['POST', 'GET'])
 def search():
