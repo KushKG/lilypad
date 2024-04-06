@@ -38,6 +38,7 @@ export default function PlantListView({ data, actionElement }) {
                 <View style={styles.detailsContainer}>
                     <Text>Sun: {details['Heat Tolerance']}</Text>
                     <Text>Watering: {details['Pest Tolerance']}</Text>
+                    <Text>Lilypad: {details['Lilypad']}</Text>
                 </View>
             )}
         </TouchableOpacity>
@@ -47,7 +48,7 @@ export default function PlantListView({ data, actionElement }) {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
-        paddingHorizontal: 20,
+        paddingHorizontal: 5,
         paddingVertical: 15,
         borderBottomWidth: 1,
         borderBottomColor: '#ccc',
@@ -60,20 +61,22 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
+        marginRight: 10,
     },
     title: {
         flex: 1, 
-        fontSize: 18,
+        fontSize: 21,
         fontWeight: 'bold',
         marginLeft: 10,
+        marginRight: 5,
     },
     actionContainer: {
-        marginRight: 0, 
+        marginRight: 0,     
         width: 40,
         height: 40
     },
     detailsContainer: {
-        marginTop: 10,
+        marginTop: 15,
         marginLeft: 30,
     },
     image: {
@@ -81,8 +84,9 @@ const styles = StyleSheet.create({
         height: 50,
         borderRadius: 25,
         marginRight: 10,
+        borderWidth: 1,
     },
     expandedContainer: {
-        marginBottom: 20, // Adjust as needed
+        marginBottom: 0, // Adjust as needed
     },
 });
