@@ -13,6 +13,7 @@ export default function AddPlantModal({modalVisible, saveToGarden, setModalVisib
     }
   };
 
+
 return (
     <Modal
         animationType="slide"

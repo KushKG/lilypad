@@ -23,6 +23,7 @@ import GardenContext from "./GardenContext";
 import AddPlantModal from "./AddPlantModal";
 import SearchFilterModal from "./SearchFilterModal";
 
+
 const SearchBar = ({ gardenId }) => {
     const [searchText, setSearchText] = useState("");
     const [searchResults, setSearchResults] = useState([]);
@@ -34,12 +35,9 @@ const SearchBar = ({ gardenId }) => {
 
     const { gardens } = useContext(GardenContext);
 
-
     const handleSearch = async (filters={}) => {
         setLoading(true);
         const results = await fetchPlants(searchText, filters);
-        // const other = await getPlantDetails(results[0].id)
-        // console.log(other)
         console.log(results)
         setSearchResults(results);
         setFoundResults(results.length != 0);
@@ -64,9 +62,11 @@ const SearchBar = ({ gardenId }) => {
 
     const saveToGarden = (quantity, garden) => {
         if (garden) {
-            add_plant(garden.id, currentPlant);
+            add_plant(garden.id, currentPlant.Name);
         } else {
-            add_plant(gardenId, currentPlant);
+            console.log(gardenId)
+            console.log("^ in search bar")
+            add_plant(gardenId, currentPlant.Name);
         }
     };
 

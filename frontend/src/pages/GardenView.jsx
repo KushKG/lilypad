@@ -3,14 +3,11 @@ import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import PlantListView from "../components/PlantListView";
 import GardenContext from "../components/GardenContext";
 import AddButton from "../components/AddButton";
+import { get_garden_data } from "../controllers/firebase_controller";
 
 export default function GardenView({ route, navigation }) {
   const { gardens } = useContext(GardenContext);
   const [garden, setGarden] = useState(gardens[route.params.index]);
-
-  for (let plant of garden.plants) {
-    plant["name"] = plant["plant_id"]
-  }
 
   useEffect(() => {
     navigation.setOptions({
@@ -19,13 +16,18 @@ export default function GardenView({ route, navigation }) {
         backgroundColor: '#B8E6AC',
       },
     });
-    setGarden(gardens[route.params.index])
+    const updateGardenData = async () => {
+      gardenData = await get_garden_data(gardens[route.params.index].id)
+      setGarden(gardenData)
+    }
+    updateGardenData()
   }, [gardens])
 
 
   const addPlant = () => {
-    console.log(garden.id)
-    navigation.navigate("Search Page",  {"gardenId": garden.id})
+    console.log(garden['id'])
+    console.log("AHJS")
+    navigation.navigate("Search Page",  {"gardenId": gardens[route.params.index]['id']})
   };
 
   return (
