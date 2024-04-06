@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import PlantListView from "../components/PlantListView";
 import GardenContext from "../components/GardenContext";
 import AddButton from "../components/AddButton";
+import SwipeView from "../components/SwipeView";
 import { get_garden_data } from "../controllers/firebase_controller";
 
 export default function GardenView({ route, navigation }) {
@@ -40,6 +41,13 @@ export default function GardenView({ route, navigation }) {
       <AddButton addFunction={addPlant}/>
     </View>
   );
+
+  // return (
+  //   <View style={styles.container}>
+  //     <SwipeView plants={garden.plants} />
+  //     <AddButton addFunction={addPlant}/>
+  //   </View>
+  // );
 }
 
 const styles = StyleSheet.create({
