@@ -76,8 +76,17 @@ export default function Gardens({ navigation }) {
             onPress={() => navigateToGarden(index)}
             style={styles.garden}
           >
-            <Text style={styles.text}>{garden.name}</Text>
-            <Text style={styles.description}>{garden.caption}</Text>
+          <View style={styles.row}>
+            <View style={styles.gardenInfo}>
+                <Text style={styles.text}>{garden.name}</Text>
+                <Text style={styles.description}>{garden.caption}</Text>
+              </View>
+              <View style={styles.reminderView}>
+                <Text>Next Reminder</Text>
+                <Text style={styles.reminderText}>5:00pm 04/07</Text>
+              </View>
+          </View>
+            
           </TouchableOpacity>
           <View style={styles.separator} />
           {editingMode && (
@@ -105,15 +114,15 @@ const styles = StyleSheet.create({
     borderBottomColor: "#ccc",
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "left",
     marginBottom: 5,
-    alignSelf: "center", // Center horizontally
-    borderColor: "#000", // Border color
+    alignSelf: "center",
+    borderColor: "#000", 
   },
   garden: {
     padding: 18,
-    flex: 1, // Expand to fill available space
-    alignItems: "center",
+    paddingLeft: 40,
+    flex: 1, 
     borderColor: "black",
   },
   deleteButton: {
@@ -143,4 +152,17 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
   },
+  gardenInfo: {
+    textAlign: 'left'
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  reminderView: {
+    paddingRight: 20
+  },
+  reminderText: {
+    fontSize: 18,
+  }
 });
