@@ -1,7 +1,8 @@
 import React from "react";
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, Button } from 'react-native';
 
 export default function SwipeView({ data }) {
+    console.log(data)
     const conversions = ["Low", "Medium", "High"];
 
     const characteristics = [
