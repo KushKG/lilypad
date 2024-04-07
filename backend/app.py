@@ -16,12 +16,27 @@ def search():
     new_df = df.copy(deep=True)
     new_df = df[df['Region'] == region]
 
-    for column, value in filters.items():
-        new_df = df[df[column] == value]
-    
     if query and query != "":
         query = query.lower()
         new_df = new_df[df['Name'].str.contains(query, case=False) | df['Description'].str.contains(query, case=False)]
+
+    
+    mask = None
+    for column, values in filters.items():
+        if len(values) > 0:
+            if isinstance(values, list):
+                condition = new_df[column].isin(values)
+            else:
+                condition = new_df[column] == values
+            if mask is None:
+                mask = condition
+            else:
+                mask &= condition
+    
+    if mask is not None:
+        new_df = new_df[mask]
+    
+    
 
     new_df = new_df.drop_duplicates(subset=['Name'], keep='first')
     new_df = new_df.dropna(subset=['Image'])
