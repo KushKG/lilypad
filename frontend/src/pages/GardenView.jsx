@@ -45,14 +45,16 @@ export default function GardenView({ route, navigation }) {
     // );
 
     return (
-        <Swiper>
-            <View style={styles.container}>
-                {garden.plants.map((plant, index) => (
-                    <SwipeView key={index} data={plant} />
-                ))}
-                <AddButton addFunction={addPlant} />
+      <Swiper>
+        {garden.plants.map((plant, index) => (
+            <View key={index} style={styles.slide}>
+                <SwipeView data={plant} />
             </View>
-        </Swiper>
+        ))}
+        <View style={styles.slide}>
+            <AddButton addFunction={addPlant} />
+        </View>
+      </Swiper>
     );
 }
 
