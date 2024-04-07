@@ -17,11 +17,11 @@ import AddButton from "../components/AddButton";
 export default function Gardens({ navigation }) {
   const { gardens } = useContext(GardenContext);
   const [editingMode, setEditingMode] = useState(false);
-  
+
   useEffect(() => {
     navigation.setOptions({
       headerStyle: {
-        backgroundColor: '#B8E6AC',
+        backgroundColor: "#B8E6AC",
       },
     });
   }, []);
@@ -63,19 +63,21 @@ export default function Gardens({ navigation }) {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={toggleEditingMode} style={styles.editButton}>
-        <Text style={styles.editText}>{editingMode ? "Done Editing" : "Edit Gardens"}</Text>
+        <Text style={styles.editText}>
+          {editingMode ? "Done Editing" : "Edit Gardens"}
+        </Text>
       </TouchableOpacity>
       {gardens.map((garden, index) => (
         <View
           key={garden.id}
           style={[styles.gardenContainer, editingMode && styles.editMode]}
         >
-          <View style={styles.separator} />
           <TouchableOpacity
             onPress={() => navigateToGarden(index)}
             style={styles.garden}
           >
             <Text style={styles.text}>{garden.name}</Text>
+            <Text style={styles.description}>This is description text</Text>
           </TouchableOpacity>
           <View style={styles.separator} />
           {editingMode && (
@@ -98,11 +100,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   gardenContainer: {
+    backgroundColor: "#fff",
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 5,
-    width: "90%", // Adjust width to not reach ends of the screen
     alignSelf: "center", // Center horizontally
     borderColor: "#000", // Border color
   },
@@ -110,9 +114,7 @@ const styles = StyleSheet.create({
     padding: 18,
     flex: 1, // Expand to fill available space
     alignItems: "center",
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: 'black',
+    borderColor: "black",
   },
   deleteButton: {
     backgroundColor: "#C70000",
@@ -120,8 +122,13 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   text: {
-    fontSize: 18,
+    fontSize: 21,
     fontWeight: "bold",
+  },
+  description: {
+    marginTop: 2,
+    color: 'gray',
+    fontStyle: 'italic',
   },
   deleteText: {
     fontSize: 16,
@@ -133,12 +140,7 @@ const styles = StyleSheet.create({
   editText: {
     fontSize: 16,
     color: "blue",
-    padding: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
   },
-  // separator: {
-  //   height: 1,
-  //   backgroundColor: "#000", // Line color
-  //   width: "90%", // Adjust width to not reach ends of the screen
-  //   alignSelf: "center", // Center horizontally
-  // },
 });
