@@ -31,23 +31,25 @@ export default function GardenView({ route, navigation }) {
     navigation.navigate("Search Page",  {"gardenId": gardens[route.params.index]['id']})
   };
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.content}>
-        {garden.plants.map((plant, index) => (
-          <PlantListView key={index} data={plant} />
-        ))}
-      </View>
-      <AddButton addFunction={addPlant}/>
-    </View>
-  );
-
   // return (
   //   <View style={styles.container}>
-  //     <SwipeView plants={garden.plants} />
+  //     <View style={styles.content}>
+  //       {garden.plants.map((plant, index) => (
+  //         <PlantListView key={index} data={plant} />
+  //       ))}
+  //     </View>
   //     <AddButton addFunction={addPlant}/>
   //   </View>
   // );
+
+  return (
+    <View style={styles.container}>
+      {garden.plants.map((plant, index) => (
+        <SwipeView key={index} data={plant} />
+      ))}
+      <AddButton addFunction={addPlant}/>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
