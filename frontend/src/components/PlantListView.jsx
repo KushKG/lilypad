@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, Button } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { getPlantDetailsByName } from "../controllers/data_controller";
+import {deletePlant} from "../pages/GardenView";
 
-export default function PlantListView({ data, actionElement }) {
+export default function PlantListView({ data, actionElement, deletePlant }) {
     const [isExpanded, setIsExpanded] = useState(false);
     const [details, setDetails] = useState(null);
 
@@ -14,6 +15,11 @@ export default function PlantListView({ data, actionElement }) {
         }
         setIsExpanded(!isExpanded);
     }; 
+
+    const handleDeletePlant = () => {
+        console.log(data.Name)
+        deletePlant(data.Name);
+    };
 
     return (
         <TouchableOpacity
@@ -27,7 +33,7 @@ export default function PlantListView({ data, actionElement }) {
                     style={styles.image}
                 />
                 <View style={styles.titleContainer}>
-                    <Text style={styles.title}>{data}</Text>
+                    <Text style={styles.title}>{data.Name}</Text>
                     <Ionicons name={isExpanded ? 'chevron-up' : 'chevron-down'} size={24} color="black" />
                 </View>
                 <View style={styles.actionContainer}>
@@ -39,6 +45,7 @@ export default function PlantListView({ data, actionElement }) {
                     <Text>Sun: {details['Heat Tolerance']}</Text>
                     <Text>Watering: {details['Pest Tolerance']}</Text>
                     <Text>Lilypad: {details['Lilypad']}</Text>
+                    <Button title="Delete Plant" onPress={handleDeletePlant} color="red" />
                 </View>
             )}
         </TouchableOpacity>

@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import PlantListView from "../components/PlantListView";
 import GardenContext from "../components/GardenContext";
 import AddButton from "../components/AddButton";
 import SwipeView from "../components/SwipeView";
 import { get_garden_data } from "../controllers/firebase_controller";
+import { delete_plant } from "../controllers/firebase_controller";
 
 export default function GardenView({ route, navigation }) {
   const { gardens } = useContext(GardenContext);
@@ -23,6 +24,29 @@ export default function GardenView({ route, navigation }) {
     }
     updateGardenData()
   }, [gardens])
+  
+
+  const deletePlant = (index) => {
+    console.log(gardens[route.params.index].id)
+    Alert.alert(
+      "Confirm Deletion",
+      "Are you sure you want to delete this garden?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          onPress: () => {
+            delete_plant(gardens[route.params.index].id, index, null);
+            console.log("Delete Pressed");
+          },
+        },
+      ]
+    );
+  };
 
 
   const addPlant = () => {
@@ -35,7 +59,7 @@ export default function GardenView({ route, navigation }) {
     <View style={styles.container}>
       <View style={styles.content}>
         {garden.plants.map((plant, index) => (
-          <PlantListView key={index} data={plant} />
+          <PlantListView key={index} data={plant} deletePlant={deletePlant}/>
         ))}
       </View>
       <AddButton addFunction={addPlant}/>

@@ -1,5 +1,5 @@
 import { db } from "./firebase_config";
-import { collection, getDocs, doc, setDoc, deleteDoc, updateDoc, arrayUnion, getDoc, onSnapshot } from "firebase/firestore";
+import { collection, getDocs, doc, setDoc, deleteDoc, updateDoc, arrayUnion, getDoc, onSnapshot, arrayRemove } from "firebase/firestore";
 import 'firebase/database';
 import { getPlantDetailsByName } from "./data_controller";
 
@@ -48,6 +48,18 @@ export const delete_garden = async (id) => {
     } catch (error) {
       console.error('Error deleting document: ', error);
     }
+}
+
+export const delete_plant = async (garden_id, plant_name) => {
+  const gardenRef = doc(collection(db, 'gardens'), garden_id);
+  try {
+    await updateDoc(gardenRef, {
+      plants: arrayRemove(plant_name)
+    });
+    console.log('Plant successfully deleted!');
+  } catch (error) {
+    console.error('Error deleting document: ', error);
+  }
 }
 
 export const add_plant = async (garden_id, plant_name) => {
