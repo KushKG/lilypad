@@ -77,7 +77,7 @@ export default function Gardens({ navigation }) {
             style={styles.garden}
           >
             <Text style={styles.text}>{garden.name}</Text>
-            <Text style={styles.description}>This is description text</Text>
+            <Text style={styles.description}>{garden.caption}</Text>
           </TouchableOpacity>
           <View style={styles.separator} />
           {editingMode && (

@@ -18,6 +18,9 @@ export default function PlantListView({ data, actionElement, deletePlant }) {
     const [details, setDetails] = useState(null);
     const [showModal, setShowModal] = useState(false);
 
+    const conversions = ["Low", "Medium", "High"];
+
+
     const toggleExpand = async () => {
         if (!details) {
             const response = await getPlantDetailsByName(data.Name);
@@ -66,9 +69,9 @@ export default function PlantListView({ data, actionElement, deletePlant }) {
                     <View style={styles.detailsContainer}>
                         <View style={styles.column}>
                             <Text style={styles.label}>Schedule:</Text>
-                            <Text>Sun: {details["Heat Tolerance"]}</Text>
+                            <Text>Heat Tolerance: {conversions[details["Heat Tolerance"]]}</Text>
                             <Text>
-                                Watering: {details["Water Requirements"]}
+                                Water Requirements: {conversions[details["Water Requirements"]]}
                             </Text>
                         </View>
                         <View style={styles.column}>

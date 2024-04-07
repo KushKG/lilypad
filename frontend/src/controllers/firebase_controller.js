@@ -27,13 +27,14 @@ export const get_gardens_listener = (callback) => {
   return unsubscribe;
 };
 
-export const create_garden = async (name, plants, remind_time) => {
+export const create_garden = async (name, plants, caption, remind_time) => {
     const collection_ref = collection(db, 'gardens');
     const document_ref = doc(collection_ref); 
     const data = {
         name: name,
         plants: plants,
         remind_time: remind_time,
+        caption: caption,
         timestamp: new Date().getTime()
     };
     
