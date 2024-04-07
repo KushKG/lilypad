@@ -30,7 +30,7 @@ export default function GardenView({ route, navigation }) {
     console.log(gardens[route.params.index].id)
     Alert.alert(
       "Confirm Deletion",
-      "Are you sure you want to delete this garden?",
+      "Are you sure you want to delete this plant?",
       [
         {
           text: "Cancel",
