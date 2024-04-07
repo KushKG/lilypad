@@ -68,11 +68,7 @@ export default function PlantListView({ data, actionElement, deletePlant }) {
               <Text>{(details["Lilypad"] * 100).toFixed(0)}</Text>
             </View>
           </View>
-          <Button
-            title="Delete Plant"
-            onPress={handleDeletePlant}
-            color="red"
-          />
+          {deletePlant != null ? <Button title="Delete Plant" onPress={handleDeletePlant} color="red" /> : <></> }
         </View>
       )}
       <Modal
