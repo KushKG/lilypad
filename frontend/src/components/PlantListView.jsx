@@ -11,6 +11,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { getPlantDetailsByName } from "../controllers/data_controller";
 import { deletePlant } from "../pages/GardenView";
+import chroma from 'chroma-js';
 
 export default function PlantListView({ data, actionElement, deletePlant }) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -28,6 +29,11 @@ export default function PlantListView({ data, actionElement, deletePlant }) {
   const handleDeletePlant = () => {
     console.log(data.Name);
     deletePlant(data.Name);
+  };
+
+  const getColorForLilypadScore = (score) => {
+    const scale = chroma.scale(['red', 'yellow', 'green']).domain([0, 1]); // Red to green scale
+    return scale(score).hex();
   };
 
   return (
@@ -65,7 +71,9 @@ export default function PlantListView({ data, actionElement, deletePlant }) {
             </View>
             <View style={styles.column}>
               <Text style={styles.label}>Lilypad Score:</Text>
-              <Text>{(details["Lilypad"] * 100).toFixed(0)}</Text>
+              <View style={[styles.circle, { backgroundColor: getColorForLilypadScore(details["Lilypad"]) }]}>
+                <Text style={styles.scoreText}>{(details["Lilypad"] * 100).toFixed(0)}</Text>
+              </View>
             </View>
           </View>
           {deletePlant != null ? <Button title="Delete Plant" onPress={handleDeletePlant} color="red" /> : <></> }
@@ -154,5 +162,16 @@ const styles = StyleSheet.create({
     color: "#333",
     textAlign: "center",
     paddingHorizontal: 17, // Dark text color
+  },
+  circle: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+  },
+  scoreText: {
+    color: 'black',
   },
 });
