@@ -1,10 +1,17 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  Button,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { getPlantDetailsByName } from "../controllers/data_controller";
-import { LinearGradient } from "expo-linear-gradient";
+import { deletePlant } from "../pages/GardenView";
 
-export default function PlantListView({ data, actionElement }) {
+export default function PlantListView({ data, actionElement, deletePlant }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [details, setDetails] = useState(null);
 
@@ -14,6 +21,11 @@ export default function PlantListView({ data, actionElement }) {
       setDetails(response);
     }
     setIsExpanded(!isExpanded);
+  };
+
+  const handleDeletePlant = () => {
+    console.log(data.Name);
+    deletePlant(data.Name);
   };
 
   return (
@@ -35,31 +47,23 @@ export default function PlantListView({ data, actionElement }) {
         <View style={styles.actionContainer}>{actionElement}</View>
       </View>
       {isExpanded && details && (
-        <View style={styles.detailsContainer}>
-          <View style={styles.column}>
-            <Text style={styles.label}>Schedule:</Text>
-            <Text>{details["Heat Tolerance"]}</Text>
-            <Text>{details["Water Requirements"]}</Text>
+        <View>
+          <View style={styles.detailsContainer}>
+            <View style={styles.column}>
+              <Text style={styles.label}>Schedule:</Text>
+              <Text>Sun: {details["Heat Tolerance"]}</Text>
+              <Text>Watering: {details["Water Requirements"]}</Text>
+            </View>
+            <View style={styles.column}>
+              <Text style={styles.label}>Lilypad Score:</Text>
+              <Text>{(details["Lilypad"] * 100).toFixed(0)}</Text>
+            </View>
           </View>
-          <View style={styles.column}>
-            <Text style={styles.label}>Lilypad Score:</Text>
-            <LinearGradient
-                            colors={['#FFD700', '#32CD32']}
-                            style={styles.gradient}
-                            // start={{x: 0, y: 0}}
-                            // end={{x: 1, y: 0}}
-                        >
-                            <Text style={[styles.progress, { width: (details['Lilypad'] * 100) + '%' }]}></Text>
-                        </LinearGradient>
-            <LinearGradient
-              // Button Linear Gradient
-              colors={["#4c669f", "#3b5998", "#192f6a"]}
-            //   style={styles.button}
-            >
-              <Text style={styles.text}>Sign in with Facebook</Text>
-            </LinearGradient>
-            <Text>{(details["Lilypad"] * 100).toFixed(0)}</Text>
-          </View>
+          <Button
+            title="Delete Plant"
+            onPress={handleDeletePlant}
+            color="red"
+          />
         </View>
       )}
     </TouchableOpacity>
@@ -102,14 +106,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  column: {
-    flex: 1,
-    alignItems: "flex-start",
-  },
-  label: {
-    fontWeight: "bold",
-    marginBottom: 5,
-  },
   image: {
     width: 50,
     height: 50,
@@ -120,13 +116,8 @@ const styles = StyleSheet.create({
   expandedContainer: {
     marginBottom: 0, // Adjust as needed
   },
-  gradient: {
-    height: 10,
-    borderRadius: 5,
-    overflow: "hidden",
-  },
-  progress: {
-    height: "100%",
-    backgroundColor: "black",
+  label: {
+    fontWeight: "bold",
+    marginBottom: 5,
   },
 });
