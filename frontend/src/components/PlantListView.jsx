@@ -1,12 +1,21 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Image, Button, Modal } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  Button,
+  Modal,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { getPlantDetailsByName } from "../controllers/data_controller";
 import { deletePlant } from "../pages/GardenView";
 
 export default function PlantListView({ data, actionElement, deletePlant }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [details, setDetails] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   const toggleExpand = async () => {
     if (!details) {
@@ -36,9 +45,13 @@ export default function PlantListView({ data, actionElement, deletePlant }) {
             size={24}
             color="black"
           />
-                                  <TouchableOpacity onPress={() => setShowModal(true)}>
-                        <Ionicons name="information-circle-outline" size={24} paddingHorizontal={4}/>
-                    </TouchableOpacity>
+          <TouchableOpacity onPress={() => setShowModal(true)}>
+            <Ionicons
+              name="information-circle-outline"
+              size={24}
+              paddingHorizontal={4}
+            />
+          </TouchableOpacity>
         </View>
         <View style={styles.actionContainer}>{actionElement}</View>
       </View>
@@ -61,24 +74,27 @@ export default function PlantListView({ data, actionElement, deletePlant }) {
             color="red"
           />
         </View>
-
       )}
       <Modal
-                visible={showModal}
-                animationType="slide"
-                onRequestClose={() => setShowModal(false)}
-            >
-                <View style={styles.modalContainer}>
-                    <Text style={styles.modalTitle}>{data.Name}</Text>
-                    <Text style={styles.modalDescription}>{data.Description}</Text>
-                    <Button title="Close" onPress={() => setShowModal(false)} />
-                </View>
-            </Modal>
+        visible={showModal}
+        animationType="slide"
+        onRequestClose={() => setShowModal(false)}
+      >
+        <View style={styles.modalContainer}>
+          <Text style={styles.modalTitle}>{data.Name}</Text>
+          <Text style={styles.modalDescription}>{data.Description}</Text>
+          <Button title="Close" onPress={() => setShowModal(false)} />
+        </View>
+      </Modal>
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
+  label: {
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
   container: {
     backgroundColor: "#fff",
     paddingHorizontal: 5,
@@ -94,7 +110,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    marginRight: 10,
+    justifyContent: "space-between",
   },
   title: {
     flex: 1,
@@ -124,72 +140,23 @@ const styles = StyleSheet.create({
   expandedContainer: {
     marginBottom: 0, // Adjust as needed
   },
-  label: {
-    fontWeight: "bold",
-    marginBottom: 5,
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#c9f7e1", // Light green color
   },
-});
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#fff',
-        paddingHorizontal: 5,
-        paddingVertical: 15,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
-    },
-    row: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    titleContainer: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-    },
-    title: {
-        flex: 1,
-        fontSize: 21,
-        fontWeight: 'bold',
-        marginLeft: 10,
-        marginRight: 5,
-    },
-    actionContainer: {
-        marginRight: 0,
-        width: 40,
-        height: 40,
-    },
-    detailsContainer: {
-        marginTop: 15,
-        marginLeft: 30,
-    },
-    image: {
-        width: 50,
-        height: 50,
-        borderRadius: 25,
-        marginRight: 10,
-        borderWidth: 1,
-    },
-    expandedContainer: {
-        marginBottom: 0, // Adjust as needed
-    },
-    modalContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#c9f7e1', // Light green color
-    },
-    modalTitle: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 10,
-        color: '#333', // Dark text color
-    },
-    modalDescription: {
-        fontSize: 18,
-        marginBottom: 20,
-        color: '#333',
-        textAlign: "center",
-        paddingHorizontal: 17, // Dark text color
-    },
+  modalTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 10,
+    color: "#333", // Dark text color
+  },
+  modalDescription: {
+    fontSize: 18,
+    marginBottom: 20,
+    color: "#333",
+    textAlign: "center",
+    paddingHorizontal: 17, // Dark text color
+  },
 });
