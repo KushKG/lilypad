@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Image, Button } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { getPlantDetailsByName } from "../controllers/data_controller";
-import {deletePlant} from "../pages/GardenView";
 
 export default function PlantListView({ data, actionElement, deletePlant }) {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -45,7 +44,7 @@ export default function PlantListView({ data, actionElement, deletePlant }) {
                     <Text>Sun: {details['Heat Tolerance']}</Text>
                     <Text>Watering: {details['Pest Tolerance']}</Text>
                     <Text>Lilypad: {details['Lilypad']}</Text>
-                    <Button title="Delete Plant" onPress={handleDeletePlant} color="red" />
+                    {deletePlant != null ? <Button title="Delete Plant" onPress={handleDeletePlant} color="red" /> : <></> }
                 </View>
             )}
         </TouchableOpacity>
