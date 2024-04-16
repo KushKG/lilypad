@@ -73,10 +73,10 @@ export default function SearchFilterModal({ modalVisible, setModalVisible, updat
                     {/* <Text style={styles.titleText}>Filters (Low, Medium, High)</Text> */}
                     <FilterElement
                         title="Heat Tolerance"
-                        iconName="thermometer-outline"
+                        iconName="sunny-outline"
                         selectedIndex={sunSelections}
                         setSelectedIndex={(index) => handlePress(index, setSunSelections, "Heat Tolerance")}
-                        accentColor="red"
+                        accentColor="orange"
                     />
                     <View style={styles.betweenSpacer}></View>
                     <FilterElement
