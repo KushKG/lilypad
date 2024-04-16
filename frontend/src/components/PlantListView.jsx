@@ -7,6 +7,7 @@ import {
     Image,
     Button,
     Modal,
+    ActivityIndicator,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { getPlantDetailsByName } from "../controllers/data_controller";
@@ -17,16 +18,36 @@ export default function PlantListView({ data, actionElement, deletePlant }) {
     const [isExpanded, setIsExpanded] = useState(false);
     const [details, setDetails] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [loading, setLoading] = useState(false);
 
-    const conversions = ["Low", "Medium", "High"];
+    const waterConversions = [
+        <Ionicons key={1} size={18} name={"water"} color="#87CEEB" />,
+        <Ionicons key={2} size={18} name={"water"} color="#87CEEB" />,
+        <Ionicons key={3} size={18} name={"water"} color="#87CEEB" />,
+    ];
 
+    const heatConversions = [
+        <Ionicons key={1} size={18} name={"sunny"} color="orange" />,
+        <Ionicons key={2} size={18} name={"sunny"} color="orange" />,
+        <Ionicons key={3} size={18} name={"sunny"} color="orange" />,
+    ];
+
+    const getIcons = (array, num) => {
+        icons = []
+        for (let i = 0; i <= num; i++) {
+            icons.push(array[i])
+        }
+        return icons
+    }
 
     const toggleExpand = async () => {
+        setIsExpanded(!isExpanded);
         if (!details) {
+            setLoading(true);
             const response = await getPlantDetailsByName(data.Name);
             setDetails(response);
+            setLoading(false);
         }
-        setIsExpanded(!isExpanded);
     };
 
     const handleDeletePlant = () => {
@@ -64,47 +85,65 @@ export default function PlantListView({ data, actionElement, deletePlant }) {
                 </View>
                 <View style={styles.actionContainer}>{actionElement}</View>
             </View>
-            {isExpanded && details && (
+            {isExpanded && (
                 <View>
-                    <View style={styles.detailsContainer}>
-                        <View style={styles.column}>
-                            <Text style={styles.label}>Schedule:</Text>
-                            <Text>Heat Tolerance: {conversions[details["Heat Tolerance"]]}</Text>
-                            <Text>
-                                Water Requirements: {conversions[details["Water Requirements"]]}
-                            </Text>
-                        </View>
-                        <View style={styles.column}>
-                            <Text style={styles.label}>Lilypad Score:</Text>
-                            <View
-                                style={[
-                                    styles.circle,
-                                    {
-                                        backgroundColor:
-                                            getColorForLilypadScore(
-                                                details["Lilypad"]
-                                            ),
-                                    },
-                                ]}
-                            >
-                                <Text style={styles.scoreText}>
-                                    {(details["Lilypad"] * 100).toFixed(0)}
-                                </Text>
-                            </View>
-                        </View>
-                    </View>
-                    {deletePlant != null ? (
-                        <Button
-                            title="Delete Plant"
-                            onPress={handleDeletePlant}
-                            color="red"
-                        />
+                    {loading ? (
+                        <ActivityIndicator size="medium" />
                     ) : (
-                        <></>
+                        <View>
+                            <View style={styles.detailsContainer}>
+                                <View style={styles.column}>
+                                    <Text style={styles.label}>Schedule:</Text>
+                                    <View style={styles.row}>
+                                        <Text>Heat Tolerance:</Text>
+                                        {
+                                            getIcons(heatConversions, details["Heat Tolerance"])
+                                        }
+                                    </View>
+                                    <View style={styles.row}>
+                                        <Text>Water Requirements:</Text>
+                                        {
+                                            getIcons(waterConversions, details["Water Requirements"])
+                                        }
+                                    </View>
+                                </View>
+                                <View style={styles.column}>
+                                    <Text style={styles.label}>
+                                        Lilypad Score:
+                                    </Text>
+                                    <View
+                                        style={[
+                                            styles.circle,
+                                            {
+                                                backgroundColor:
+                                                    getColorForLilypadScore(
+                                                        details["Lilypad"]
+                                                    ),
+                                            },
+                                        ]}
+                                    >
+                                        <Text style={styles.scoreText}>
+                                            {(details["Lilypad"] * 100).toFixed(
+                                                0
+                                            )}
+                                        </Text>
+                                    </View>
+                                </View>
+                            </View>
+                            {deletePlant != null ? (
+                                <Button
+                                    title="Delete Plant"
+                                    onPress={handleDeletePlant}
+                                    color="red"
+                                />
+                            ) : (
+                                <></>
+                            )}
+                        </View>
                     )}
                 </View>
             )}
-            <MoreInfoModal 
+            <MoreInfoModal
                 showModal={showModal}
                 setShowModal={setShowModal}
                 data={data}

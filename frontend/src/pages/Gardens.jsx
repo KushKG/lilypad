@@ -8,9 +8,6 @@ import {
   Alert,
 } from "react-native";
 import { delete_garden, get_gardens } from "../controllers/firebase_controller";
-import { NavigationContainer, useFocusEffect } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import { GardenProvider } from "../components/GardenContext";
 import GardenContext from "../components/GardenContext";
 import AddButton from "../components/AddButton";
 
