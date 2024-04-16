@@ -96,12 +96,30 @@ export default function Gardens({ navigation }) {
           )}
         </View>
       ))}
-      <AddButton addFunction={navigateToNewPage} />
+      <TouchableOpacity>
+        <View style={styles.addButton}>
+          <Text style={styles.addButtonText}>Add Garden</Text>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  addButton: {
+    width: '45%',
+    backgroundColor: "green",
+    alignSelf: 'center',
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    marginTop: 10
+  },
+  addButtonText: {
+    textAlign: 'center',
+    color: 'white',
+    fontSize: 20
+  },
   container: {
     flex: 1,
   },

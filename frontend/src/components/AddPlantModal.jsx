@@ -4,15 +4,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
 
 export default function AddPlantModal({modalVisible, saveToGarden, setModalVisible, gardenId, gardens }) {
-    
-    const [quantity, setQuantity] = useState(1); 
-
-    const editQuantity = num => {
-    if (quantity + num > 1) {
-      setQuantity(quantity + num);
-    }
-  };
-
 
 return (
     <Modal
@@ -25,16 +16,6 @@ return (
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text>Quantity:</Text>
-            <View style={styles.quantityContainer}>
-              <TouchableOpacity onPress={() => editQuantity(1)}>
-                <Ionicons name="remove" size={24} color="black" />
-              </TouchableOpacity>
-              <Text style={styles.quantityText}>{quantity}</Text>
-              <TouchableOpacity onPress={() => editQuantity(-1)}>
-                <Ionicons name="add" size={24} color="black" />
-              </TouchableOpacity>
-            </View>
             {gardenId === null ? (
               <>
                 <Text style={styles.dropdownTitle}>Select Garden:</Text>
@@ -44,7 +25,7 @@ return (
                       key={garden.id}
                       onPress={() => {
                         setModalVisible(!modalVisible);
-                        saveToGarden(quantity, garden)
+                        saveToGarden(garden)
                       }}
                       style={styles.dropdownItem}
                     >
@@ -55,7 +36,7 @@ return (
               </>
             ) : (
               <Button title="Add to Garden" onPress={() => {
-                  saveToGarden(quantity)
+                  saveToGarden()
                   setModalVisible(!modalVisible);
                 }
                 } />

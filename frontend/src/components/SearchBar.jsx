@@ -18,11 +18,10 @@ import {
     search,
 } from "../controllers/data_controller";
 import PlantListView from "./PlantListView";
-import { add_plant } from "../controllers/firebase_controller";
+import { add_plant, delete_plant } from "../controllers/firebase_controller";
 import GardenContext from "./GardenContext";
 import AddPlantModal from "./AddPlantModal";
 import SearchFilterModal from "./SearchFilterModal";
-
 
 const SearchBar = ({ gardenId }) => {
     const [searchText, setSearchText] = useState("");
@@ -35,10 +34,9 @@ const SearchBar = ({ gardenId }) => {
 
     const { gardens } = useContext(GardenContext);
 
-    const handleSearch = async (filters={}) => {
+    const handleSearch = async (filters = {}) => {
         setLoading(true);
         const results = await fetchPlants(searchText, filters);
-        console.log(results)
         setSearchResults(results);
         setFoundResults(results.length != 0);
         setLoading(false);
@@ -48,7 +46,7 @@ const SearchBar = ({ gardenId }) => {
         <View style={{ padding: 10 }}>
             <PlantListView
                 actionElement={
-                    <ActionButton onPress={() => addToGarden(item)} />
+                    <ActionButton item={item} onPress={() => addToGarden(item)} />
                 }
                 data={item}
             ></PlantListView>
@@ -56,29 +54,64 @@ const SearchBar = ({ gardenId }) => {
     );
 
     const addToGarden = (item) => {
-        setCurrentPlant(item);
-        setAddModalVisible(true);
-    };
-
-    const saveToGarden = (quantity, garden) => {
-        if (garden) {
-            add_plant(garden.id, currentPlant.Name);
+        if (gardenId == null) {
+            setCurrentPlant(item);
+            setAddModalVisible(true);
         } else {
-            console.log(gardenId)
-            console.log("^ in search bar")
-            add_plant(gardenId, currentPlant.Name);
+            saveToGarden(null, item)
         }
     };
 
-    const updateResults = filters => {
-        handleSearch(filters)
-    }
+    const saveToGarden = (garden, item) => {
+        let temp = null
+        if (item != null) {
+            temp = item
+        } else {
+            temp = currentPlant
+        }
+        if (garden) {
+            add_plant(garden.id, temp.Name);
+        } else {
+            console.log(gardenId);
+            console.log("^ in search bar");
+            add_plant(gardenId, temp.Name);
+        }
+    };
 
-    const ActionButton = ({ onPress }) => (
-        <TouchableOpacity onPress={onPress} style={styles.actionButton}>
-            <Ionicons name="add" size={24} color="white" />
-        </TouchableOpacity>
-    );
+    const updateResults = (filters) => {
+        handleSearch(filters);
+    };
+
+    const ActionButton = ({ onPress, item }) => {
+        if (gardenId == null) {
+            return (
+                <TouchableOpacity onPress={onPress} style={styles.actionButton}>
+                    <Ionicons name="add" size={24} color="white" />
+                </TouchableOpacity>
+            );
+        } else {
+            let garden = null
+            let added = false
+            for (const temp of gardens) {
+                if (temp.id == gardenId) {
+                    garden = temp
+                }
+            }
+            if (garden != null) {
+                if (garden.plants.includes(item.Name)) {
+                    added = true
+                }
+            }
+            if (added) {
+                onPress = () => delete_plant(gardenId, item.Name)
+            }
+            return (
+                <TouchableOpacity onPress={onPress} style={[styles.actionButton, {backgroundColor: added ? '#656565' : 'green'}]}>
+                    <Ionicons name={added ? "checkmark" : "add"} size={24} color={"white"} />
+                </TouchableOpacity>
+            );
+        }
+    };
 
     return (
         <View
@@ -97,10 +130,10 @@ const SearchBar = ({ gardenId }) => {
                         borderWidth: 1,
                         marginBottom: 10,
                         padding: 5,
-                        borderRadius: 20, 
+                        borderRadius: 20,
                         flex: 1,
                         paddingLeft: 10,
-                        marginLeft: 10
+                        marginLeft: 10,
                     }}
                     onChangeText={(text) => setSearchText(text)}
                     onSubmitEditing={() => handleSearch()}
@@ -164,9 +197,9 @@ const styles = StyleSheet.create({
         width: 35,
         height: 35,
         borderRadius: 20,
-        backgroundColor: "green",
         justifyContent: "center",
         alignItems: "center",
+        backgroundColor: 'green'
     },
     bar: {
         height: 40,
