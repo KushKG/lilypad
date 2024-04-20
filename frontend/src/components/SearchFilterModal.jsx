@@ -21,7 +21,6 @@ export default function SearchFilterModal({
   const [pestSelections, setPestSelections] = useState([]);
   const [fertilizerSelections, setFertilizerSelections] = useState([]);
   const [soilSelections, setSoilSelections] = useState([]);
-  const [filters, setFilters] = useState({});
 
   const handlePress = (val, stateFunc, name) => {
     stateFunc((prev) => {
@@ -47,11 +46,18 @@ export default function SearchFilterModal({
     setPestSelections([]);
     setFertilizerSelections([]);
     setSoilSelections([]);
-    setFilters({});
+    update();
     setModalVisible(false);
   };
 
   const update = () => {
+    const filters = {
+      'Heat Tolerance': sunSelections,
+      'Water Requirements': waterSelections,
+      'Pest Tolerance': pestSelections,
+      'Fertility Requirements': fertilizerSelections,
+      'Soil Requirements': soilSelections
+    }
     updateResults(filters);
     setModalVisible(false);
   };
@@ -70,22 +76,32 @@ export default function SearchFilterModal({
           <MultiSelectComponent
             fieldName={"Heat Tolerance"}
             iconName="sunny-outline"
+            selected={sunSelections}
+            setSelected={setSunSelections}
           />
           <MultiSelectComponent
             fieldName={"Water Requirements"}
             iconName="water-outline"
+            selected={waterSelections}
+            setSelected={setWaterSelections}
           />
           <MultiSelectComponent
             fieldName={"Pest Tolerance"}
             iconName="bug-outline"
+            selected={pestSelections}
+            setSelected={setPestSelections}
           />
           <MultiSelectComponent
             fieldName={"Fertilizer Requirements"}
             iconName={"storefront-outline"}
+            selected={fertilizerSelections}
+            setSelected={setFertilizerSelections}
           />
           <MultiSelectComponent
             fieldName={"Soil Requirements"}
             iconName="earth-outline"
+            selected={soilSelections}
+            setSelected={setSoilSelections}
           />
           <TouchableOpacity style={styles.closeButton} onPress={clear}>
             <AntDesign name="close" size={24} color="black" />

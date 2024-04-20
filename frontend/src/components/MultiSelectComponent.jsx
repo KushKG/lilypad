@@ -9,8 +9,7 @@ const data = [
   { label: "High", value: 2 },
 ];
 
-const MultiSelectComponent = ({ fieldName, iconName }) => {
-  const [selected, setSelected] = useState([]);
+const MultiSelectComponent = ({ fieldName, iconName, selected, setSelected }) => {
 
   return (
     <View style={styles.container}>

@@ -79,6 +79,7 @@ const SearchBar = ({ gardenId }) => {
     };
 
     const updateResults = (filters) => {
+        console.log(filters)
         handleSearch(filters);
     };
 
