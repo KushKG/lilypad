@@ -1,4 +1,4 @@
-const apiUrl = 'http://127.0.0.1:5000'; 
+const apiUrl = 'https://f766-2600-1700-22-4000-1cce-a568-75b3-2090.ngrok-free.app'; 
 
 export async function fetchPlants(query, filters, region) {
   let url = `${apiUrl}/search?q=${query}&filters=${JSON.stringify(filters)}&region=5`

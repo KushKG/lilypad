@@ -96,7 +96,7 @@ export default function Gardens({ navigation }) {
           )}
         </View>
       ))}
-      <TouchableOpacity>
+      <TouchableOpacity onPress={navigateToNewPage}>
         <View style={styles.addButton}>
           <Text style={styles.addButtonText}>Add Garden</Text>
         </View>

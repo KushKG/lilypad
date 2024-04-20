@@ -19,6 +19,7 @@ export default function PlantListView({ data, actionElement, deletePlant }) {
     const [details, setDetails] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [lilypadModal, showLilypadInfoModal] = useState(false);
 
     const waterConversions = [
         <Ionicons key={1} size={18} name={"water"} color="#87CEEB" />,
@@ -32,13 +33,17 @@ export default function PlantListView({ data, actionElement, deletePlant }) {
         <Ionicons key={3} size={18} name={"sunny"} color="orange" />,
     ];
 
+    const conversions = [
+        'Low', 'Medium', 'High'
+    ]
+
     const getIcons = (array, num) => {
-        icons = []
+        icons = [];
         for (let i = 0; i <= num; i++) {
-            icons.push(array[i])
+            icons.push(array[i]);
         }
-        return icons
-    }
+        return icons;
+    };
 
     const toggleExpand = async () => {
         setIsExpanded(!isExpanded);
@@ -96,39 +101,50 @@ export default function PlantListView({ data, actionElement, deletePlant }) {
                                     <Text style={styles.label}>Schedule:</Text>
                                     <View style={styles.row}>
                                         <Text>Heat Tolerance:</Text>
-                                        {
-                                            getIcons(heatConversions, details["Heat Tolerance"])
-                                        }
+                                        {getIcons(
+                                            heatConversions,
+                                            details["Heat Tolerance"]
+                                        )}
                                     </View>
                                     <View style={styles.row}>
                                         <Text>Water Requirements:</Text>
-                                        {
-                                            getIcons(waterConversions, details["Water Requirements"])
-                                        }
+                                        {getIcons(
+                                            waterConversions,
+                                            details["Water Requirements"]
+                                        )}
                                     </View>
                                 </View>
                                 <View style={styles.column}>
                                     <Text style={styles.label}>
                                         Lilypad Score:
                                     </Text>
-                                    <View
-                                        style={[
-                                            styles.circle,
-                                            {
-                                                backgroundColor:
-                                                    getColorForLilypadScore(
-                                                        details["Lilypad"]
-                                                    ),
-                                            },
-                                        ]}
-                                    >
-                                        <Text style={styles.scoreText}>
-                                            {(details["Lilypad"] * 100).toFixed(
-                                                0
-                                            )}
-                                        </Text>
+                                        <View
+                                            style={[
+                                                styles.circle,
+                                                {
+                                                    backgroundColor:
+                                                        getColorForLilypadScore(
+                                                            details["Lilypad"]
+                                                        ),
+                                                },
+                                            ]}
+                                        >
+                                            <Text style={styles.scoreText}>
+                                                {(
+                                                    details["Lilypad"] * 100
+                                                ).toFixed(0)}
+                                            </Text>
+                                        </View>
+                                        <View>
+                                            <TouchableOpacity
+                                                onPress={() =>
+                                                    showLilypadInfoModal(true)
+                                                }
+                                            >
+                                                <Text style={styles.whatText}>what is this?</Text>
+                                            </TouchableOpacity>
+                                        </View>
                                     </View>
-                                </View>
                             </View>
                             {deletePlant != null ? (
                                 <Button
@@ -148,11 +164,57 @@ export default function PlantListView({ data, actionElement, deletePlant }) {
                 setShowModal={setShowModal}
                 data={data}
             />
+            <Modal
+                transparent={false} // Set to false to have a solid background
+                visible={lilypadModal}
+                animationType="slide"
+                onRequestClose={() => showLilypadInfoModal(false)}
+            >
+                <View style={styles.lilypadInfoModalContainer}>
+                    <View style={styles.lilypadInfoModalContent}>
+                        <Text>
+                            The LilyPad Score® is our way of calculating exactly
+                            how good a plant is for your region. Using our
+                            algorithm we rate plants from 1 to 100, 1 being
+                            terrible and 100 being amazing
+                        </Text>
+                        <Button
+                            onPress={() => showLilypadInfoModal(false)}
+                            title="Close"
+                        />
+                    </View>
+                </View>
+            </Modal>
         </TouchableOpacity>
     );
 }
 
 const styles = StyleSheet.create({
+    lilypadInfoModalContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#fff", // Solid white background
+    },
+    lilypadInfoModalContent: {
+        backgroundColor: "#fff",
+        padding: 20,
+        borderRadius: 10,
+        width: "80%", // Adjust width as needed
+        maxHeight: "70%", // Adjust maximum height as needed
+    },
+    infoLilypad: {
+        position: "absolute",
+        top: 0,
+        right: 40,
+        width: 30,
+        height: 30,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    whatText: {
+        color: 'gray'
+    },
     label: {
         fontWeight: "bold",
         marginBottom: 5,
